@@ -18,7 +18,7 @@ if(isset($_GET['do']) && $_GET['do'] == 'show'){
 			echo	"<th scope='row'>". $car['id']. "</th>";
 			echo	"<td>". $car['name'] ."</td>";
 			echo	"<td>
-						<button type='button' rel='{$car['id']}' class='btn btn-info update_car title-link'>Update</button>
+						<button type='button' rel='{$car['id']}' class='btn btn-info update_car title-link'>Edit</button>
 						<button type='button' rel='{$car['id']}' class='btn btn-danger delete_car title-link confirm'>Delete</button>
 					</td>";
 			echo "</tr>";
@@ -68,7 +68,7 @@ if(isset($_GET['do']) && $_GET['do'] == 'showUpdatedName'){
 		$stmt = $db->prepare("select * from cars where id = {$id}");
 		if($stmt->execute()){
 			$car_name = $stmt->fetch();
-			echo "<div class='form-group'>";
+			echo "<div class='form-group carUpdateName'>";
 			echo "<input type='text' class='form-control name_update' name='name_update' value='". $car_name['name'] . "'>";
 			echo "</div>";
 			echo "<button rel='{$car_name['id']}' class='btn btn-primary btn-sm save-update'>Update</button>";
@@ -131,9 +131,14 @@ if(isset($_GET['do']) && $_GET['do'] == 'delete'){
 			url: 'function.php?do=update',
 			type: 'post',
 			data: {id:id,name:name},
+		}).done(function(){
+			$(".carUpdateName").html("<div class='alert alert-success'>Updated sucesfully</div>");
+			$('.save-update').hide();
+
 		}).fail(function(){
 			alert("error");
 		});
+
 	});
 
 // JS deleting car	
